@@ -132,4 +132,7 @@ export default class fabricNetworkSimple {
       );
     }
   }
+  async getContract() {
+    return this.contract;
+  }
 }
