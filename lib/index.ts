@@ -61,6 +61,7 @@ interface invokeChaincodeResponse {
 
 export default class fabricNetworkSimple {
   contract: Contract;
+  gateway: Gateway;
   constructor(config: config) {
     this.initGateway(config);
   }
@@ -84,9 +85,9 @@ export default class fabricNetworkSimple {
           asLocalhost: config.settings.asLocalhost,
         },
       };
-      const gateway = new Gateway();
-      await gateway.connect(config.connectionProfile, gatewayOptions);
-      const network = await gateway.getNetwork(config.channelName);
+      this.gateway = new Gateway();
+      await this.gateway.connect(config.connectionProfile, gatewayOptions);
+      const network = await this.gateway.getNetwork(config.channelName);
       this.contract = network.getContract(config.contractName);
     } catch (error) {
       throw error;
@@ -134,5 +135,8 @@ export default class fabricNetworkSimple {
   }
   async getContract() {
     return this.contract;
+  }
+  async getGateway() {
+    return this.gateway;
   }
 }
