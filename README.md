@@ -5,8 +5,20 @@ A simplified wrapper for fabric-network. Typescript usage is recommended for aut
 
 ## Installation
 ```
-npm install fabric-network-simple
-yarn add fabric-network-simple
+npm install https://github.com/agustin-marin/fabric-netowrk-simple.git
+yarn add https://github.com/agustin-marin/fabric-netowrk-simple.git
+```
+On the package file:
+```
+{
+  },
+  "dependencies": {
+   
+    "fabric-network-simple": "https://github.com/agustin-marin/fabric-netowrk-simple.git",
+  },
+  "devDependencies": {
+  }
+}
 ```
 
 ##Include
