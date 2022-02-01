@@ -109,11 +109,9 @@ export default class fabricNetworkSimple {
       );
     }
   }
-  async getContract() {
-    return this.contract;
-  }
-  async getGateway() {
-    return this.gateway;
+  async updateGateway() {
+    await this.initGateway(this.config)
+    return true;
   }
   async initGateway(config: config) {
     try {
