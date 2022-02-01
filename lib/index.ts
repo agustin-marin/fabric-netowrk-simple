@@ -142,6 +142,7 @@ export default class fabricNetworkSimple {
     } catch (error) {
       throw error;
     } finally {
+      return true;
     }
   }
 }
