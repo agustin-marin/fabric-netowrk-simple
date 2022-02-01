@@ -5,6 +5,7 @@ import {
   GatewayOptions,
   TransientMap,
   Contract,
+    Network
 } from "fabric-network";
 
 export interface config {
@@ -62,38 +63,13 @@ interface invokeChaincodeResponse {
 export default class fabricNetworkSimple {
   contract: Contract;
   gateway: Gateway;
+  config: config;
+  network: Network;
   constructor(config: config) {
+    this.config = config;
     this.initGateway(config);
   }
-  async initGateway(config: config) {
-    try {
-      const wallet = await Wallets.newInMemoryWallet();
-      const x509Identity: X509Identity = {
-        credentials: {
-          certificate: config.identity.certificate,
-          privateKey: config.identity.privateKey,
-        },
-        mspId: config.identity.mspid,
-        type: "X.509",
-      };
-      await wallet.put(config.identity.mspid, x509Identity);
-      const gatewayOptions: GatewayOptions = {
-        identity: config.identity.mspid,
-        wallet,
-        discovery: {
-          enabled: config.settings.enableDiscovery,
-          asLocalhost: config.settings.asLocalhost,
-        },
-      };
-      this.gateway = new Gateway();
-      await this.gateway.connect(config.connectionProfile, gatewayOptions);
-      const network = await this.gateway.getNetwork(config.channelName);
-      this.contract = network.getContract(config.contractName);
-    } catch (error) {
-      throw error;
-    } finally {
-    }
-  }
+
   async queryChaincode(transaction: string, args: string[]) {
     try {
       const queryResult = await this.contract.evaluateTransaction(
@@ -138,5 +114,34 @@ export default class fabricNetworkSimple {
   }
   async getGateway() {
     return this.gateway;
+  }
+  async initGateway(config: config) {
+    try {
+      const wallet = await Wallets.newInMemoryWallet();
+      const x509Identity: X509Identity = {
+        credentials: {
+          certificate: config.identity.certificate,
+          privateKey: config.identity.privateKey,
+        },
+        mspId: config.identity.mspid,
+        type: "X.509",
+      };
+      await wallet.put(config.identity.mspid, x509Identity);
+      const gatewayOptions: GatewayOptions = {
+        identity: config.identity.mspid,
+        wallet,
+        discovery: {
+          enabled: config.settings.enableDiscovery,
+          asLocalhost: config.settings.asLocalhost,
+        },
+      };
+      this.gateway = new Gateway();
+      await this.gateway.connect(config.connectionProfile, gatewayOptions);
+      this.network = await this.gateway.getNetwork(config.channelName);
+      this.contract = this.network.getContract(config.contractName);
+    } catch (error) {
+      throw error;
+    } finally {
+    }
   }
 }
