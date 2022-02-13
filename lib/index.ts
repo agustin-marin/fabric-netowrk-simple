@@ -65,9 +65,9 @@ export default class fabricNetworkSimple {
   gateway: Gateway;
   config: config;
   network: Network;
-  constructor(config: config) {
+  async constructor(config: config) {
     this.config = config;
-    this.initGateway(config);
+    await this.initGateway(config);
   }
 
   async queryChaincode(transaction: string, args: string[]) {
@@ -109,10 +109,7 @@ export default class fabricNetworkSimple {
       );
     }
   }
-  async updateGateway() {
-    await this.initGateway(this.config)
-    return true;
-  }
+
   async initGateway(config: config) {
     try {
       const wallet = await Wallets.newInMemoryWallet();
