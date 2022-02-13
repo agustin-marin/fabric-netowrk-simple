@@ -133,6 +133,7 @@ export default class fabricNetworkSimple {
           asLocalhost: config.settings.asLocalhost,
         },
       };
+
       this.gateway = new Gateway();
       await this.gateway.connect(config.connectionProfile, gatewayOptions);
       this.network = await this.gateway.getNetwork(config.channelName);
